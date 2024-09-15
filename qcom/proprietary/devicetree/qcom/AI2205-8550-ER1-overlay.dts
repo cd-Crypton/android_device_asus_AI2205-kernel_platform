@@ -1,0 +1,112 @@
+/dts-v1/;
+/plugin/;
+
+#include "AI2205-8550-SR2-overlay.dts"
+
+/ {
+	model = "Qualcomm Technologies, Inc. ASUS AI2205 8550 KERNEL ER1";
+	compatible = "qcom,kalama-mtp", "qcom,kalama", "qcom,mtp";
+	qcom,msm-id = <519 0x10000>, <536 0x10000>, <519 0x20000>, <536 0x20000>;
+	qcom,board-id = <50 0>;
+};
+
+&qupv3_se8_i2c {
+    status = "ok";
+    ms51@16 {
+        compatible = "ms51_phone";
+        reg = <0x16>;
+
+        nuvoton,logo_5p0_en = <&pm8550b_gpios 9 0x0>;
+        nuvoton,wakeup_pin = <&tlmm 137 0>;
+        nuvoton,hw_stage = <5>;
+        /delete-node/ vdd-supply;
+    };
+};
+
+&pm8550b_eusb2_repeater {
+	qcom,param-override-seq =
+		/* <value reg_offset> */
+		/* Adjust HS trasmit amplitude */
+		<0xd 0x51
+		/* TX Output Resistance*/
+		 0x1 0x52
+		/* Disconnect Threshold - EUSB2_TUNE_HSDISC */
+		 0x4 0x53
+		/* Squelch detection threshold */
+		 0x3 0x54
+		/* HS TX slew rate tuning */
+		 0x3 0x55
+		/* Rx Equalization*/
+		 0x0 0x56
+		/* Tx pre-emphasis tuning */
+		 0x4 0x57>;
+	qcom,param-override-seq-BTM =
+		/* <value reg_offset> */
+		/* Adjust HS trasmit amplitude */
+		<0xd 0x51
+		/* TX Output Resistance*/
+		 0x1 0x52
+		/* Disconnect Threshold - EUSB2_TUNE_HSDISC */
+		 0x4 0x53
+		/* Squelch detection threshold */
+		 0x3 0x54
+		/* HS TX slew rate tuning */
+		 0x3 0x55
+		/* Rx Equalization*/
+		 0x0 0x56
+		/* Tx pre-emphasis tuning */
+		 0x7 0x57>;
+	qcom,param-override-seq-host =
+		/* <value reg_offset> */
+		/* Adjust HS trasmit amplitude */
+		<0x9 0x51
+		/* TX Output Resistance*/
+		 0x1 0x52
+		/* Disconnect Threshold - EUSB2_TUNE_HSDISC */
+		 0x7 0x53
+		/* Squelch detection threshold */
+		 0x3 0x54
+		/* HS TX slew rate tuning */
+		 0x1 0x55
+		/* Rx Equalization*/
+		 0x0 0x56
+		/* Tx pre-emphasis tuning */
+		 0x7 0x57>;
+	qcom,param-override-seq-BTM-host =
+		/* <value reg_offset> */
+		/* Adjust HS trasmit amplitude */
+		<0xf 0x51
+		/* TX Output Resistance*/
+		 0x1 0x52
+		/* Disconnect Threshold - EUSB2_TUNE_HSDISC */
+		 0x7 0x53
+		/* Squelch detection threshold */
+		 0x3 0x54
+		/* HS TX slew rate tuning */
+		 0x1 0x55
+		/* Rx Equalization*/
+		 0x0 0x56
+		/* Tx pre-emphasis tuning */
+		 0x7 0x57>;
+};
+
+//ASUS BSP ACCY +++
+&soc {
+	rog_accy {
+		compatible = "asus:rog_accy";
+		status = "okay";
+
+		accy,vph_ctrl = <&tlmm 183 0x0>;
+		accy,type = "primary";
+	};
+};
+//ASUS BSP ACCY ---
+
+//PMOLED
+&futaba_pmoled {
+	asus,hardware-stage = "er";
+	// to determine if there is PMOLED on the board
+	asus,light-guide-film-id1 = <&tlmm 87 0>;
+	asus,light-guide-film-id2 = <&tlmm 58 0>;
+	asus,light-guide-film-id3 = <&tlmm 126 0>;
+};

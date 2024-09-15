@@ -1,0 +1,86 @@
+/dts-v1/;
+/plugin/;
+
+#include "AI2205-8550-EVB-overlay.dts"
+
+/ {
+	model = "Qualcomm Technologies, Inc. ASUS AI2205 8550 KERNEL SR1";
+	compatible = "qcom,kalama-mtp", "qcom,kalama", "qcom,mtp";
+	qcom,msm-id = <519 0x10000>, <536 0x10000>, <519 0x20000>, <536 0x20000>;
+	qcom,board-id = <40 0>;
+};
+
+//ASUS BSP Fingerprint +++
+&soc {
+	goodix_fp {
+		fp-gpio-irq = <&tlmm 9 0x00>;
+ 	};
+};
+//ASUS BSP Fingerprint ---
+
+&qupv3_se8_i2c {
+    status = "ok";
+    ms51@16 {
+        compatible = "ms51_phone";
+        reg = <0x16>;
+
+        nuvoton,wakeup_pin = <&tlmm 137 0>;
+        nuvoton,hw_stage = <6>;
+        nuvoton,vdd-voltage = <1800000>;
+        //vdd-supply = <&L5N>;
+    };
+};
+
+//Hall_sensor +++	
+//use gpio187 for interrupt pin
+&sdhc_2 {
+	//status = "disable";  //temp
+};
+&soc {	
+	hall_sensor {	
+		compatible = "qcom,hall";	
+		pinctrl-names = "hall_gpio_high","hall_gpio_low";	
+		//vdd-supply = <&L8C>;	
+		pinctrl-0 = <&gpio_hall_active>;	
+		pinctrl-1 = <&gpio_hall_suspend>;	
+		qcom,hall-gpio = <&tlmm 187 0x0>;	
+	};
+};	
+
+
+&tlmm{
+	
+	hall_int_pin {		
+		gpio_hall_active: gpio_hall_active {	
+			mux {	
+				pins = "gpio187";	
+				function = "gpio";	
+			};
+
+			config {	
+				pins = "gpio187";	
+				drive-strength = <2>;	
+				bias-pull-up;	
+				input-enable;
+			};	
+		};
+
+		gpio_hall_suspend: gpio_hall_suspend {	
+			mux {	
+				pins = "gpio187";	
+				function = "gpio";	
+			};	
+
+			config {	
+				pins = "gpio187";	
+				drive-strength = <2>;	
+				bias-pull-down;
+				input-enable;	
+			};	
+		};
+
+		
+	};	
+	
+};
+//Hall_sensor ---

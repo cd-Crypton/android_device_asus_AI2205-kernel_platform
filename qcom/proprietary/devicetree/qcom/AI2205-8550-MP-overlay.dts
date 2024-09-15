@@ -1,0 +1,11 @@
+/dts-v1/;
+/plugin/;
+
+#include "AI2205-8550-PR-overlay.dts"
+
+/ {
+	model = "Qualcomm Technologies, Inc. ASUS AI2205 8550 KERNEL MP";
+	compatible = "qcom,kalama-mtp", "qcom,kalama", "qcom,mtp";
+	qcom,msm-id = <519 0x10000>, <536 0x10000>, <519 0x20000>, <536 0x20000>;
+	qcom,board-id = <70 0>;
+};
