@@ -1,0 +1,6 @@
+config GAMEPAD_GU200A
+	tristate "gamepad_gu200a"
+    default n
+	help
+		Enable gamepad gu200a kernel module
+		If unsure, say N.

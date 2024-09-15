@@ -1,0 +1,8 @@
+obj-m := nxp-nci.o
+
+nxp-nci-objs := common.o \
+             common_ese.o \
+             i2c_drv.o
+
+ccflags-y += -DDYNAMIC_DEBUG_MODULE
+
